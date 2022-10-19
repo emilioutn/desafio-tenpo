@@ -1,0 +1,62 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.3'
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'checkstyle'
+	id 'java'
+}
+
+group = 'com.exampletenpo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('mapstructVersion', '1.4.2.Final')
+	set('problemSpringWebVersion', '0.26.2')
+	set('swaggerVersion', '3.0.0')
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.postgresql:postgresql'
+	implementation "org.zalando:problem-spring-web:${problemSpringWebVersion}"
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	implementation("io.springfox:springfox-boot-starter:${swaggerVersion}") {
+		exclude module: "mapstruct"
+	}
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'junit:junit:4.13.2'
+	testImplementation 'org.mockito:mockito-junit-jupiter:4.8.0'
+
+
+	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'com.h2database:h2:2.1.214'
+	implementation 'org.springframework.data:spring-data-envers:2.7.3'
+	implementation 'com.vladmihalcea:hibernate-types-52:2.19.2'
+}
+
+checkstyle {
+	toolVersion '8.43'
+	configFile file("configuration/checkstyle/checkstyle.xml")
+}
+
+test {
+	useJUnitPlatform()
+}

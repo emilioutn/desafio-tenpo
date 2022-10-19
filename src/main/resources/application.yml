@@ -1,0 +1,39 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /tenpo
+spring:
+  application:
+    name: calculate-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tenpo
+    driverClassName: org.postgresql.Driver
+    username: root
+    password: root
+      #datasource:
+      #url: jdbc:h2:mem:devices
+      #username: root
+      #password: root
+      #driver-class-name: org.h2.Driver
+      #h2:
+      #console:
+    #enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      #ddl-auto: create-drop
+tenpo:
+  app:
+    percentageCron: "0 */30 * * * *"
+otherApp:
+  url:
+    api: ${OTHER_API:https://somepage.com.cl/}
+application:
+  clientApp:
+    name: TenpoApp
+logging:
+  level:
+    org:
+      hibernate:
+        sql: debug

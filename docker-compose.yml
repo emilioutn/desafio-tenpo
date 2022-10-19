@@ -1,0 +1,25 @@
+version: '2'
+services:
+    database:
+        image: postgres:latest
+        container_name: local_pgdb
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
+            POSTGRES_DB: tenpo
+        volumes:
+            - ./local_pgdb/:/var/lib/postgresql/data/
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgadmin4_container
+        restart: always
+        ports:
+            - "5050:80"
+        environment:
+            PGADMIN_DEFAULT_EMAIL: emilioutn@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: root
+        volumes:
+            - ./pgadmin-data/:/var/lib/pgadmin
