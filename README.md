@@ -1,90 +1,227 @@
 # jwt-swagger-cucumber-envers-springboot
 
-## Getting started
+- Repositorio de [GitHub](https://github.com/emilioutn/desafio-tenpo)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Comenzado..
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+A continuación, se describen una serie de pasos para poner el servicio a funcionar y procedimientos a tener en cuenta, 
+en caso de realizar cambios.
 
-## Add your files
+## Requisitos
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+- [ ] JDK 17.
+- [ ] Tener Docker instalado.
+- [ ] Tener Docker compose instalado.
+- [ ] Gradle versión 7.1+
+
+## Configuración inicial
+
+- [ ] Ubicarse en la raíz del proyecto, y ejecutar el siguiente comando:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/emilioutn/jwt-swagger-cucumber-envers-springboot.git
-git branch -M main
-git push -uf origin main
+docker-compose.yml up -d
 ```
 
-## Integrate with your tools
+- Este archivo permite generar contenedores docker de las siguientes imágenes:
+ 
+Última versión de la Base de Datos Posgres, 
+pgAdmin4 y 
+Microservicio desafío.
 
-- [ ] [Set up project integrations](https://gitlab.com/emilioutn/jwt-swagger-cucumber-envers-springboot/-/settings/integrations)
+- Al instalarse el motor de BD también se creará una nueva Base de Datos de nombre "tenpo".
 
-## Collaborate with your team
+- Cabe destacar que, la imagen del microservicio se encuentra alojada en DockerHub, bajo el nombre de usuario "criters".
+Manualmente es posible descargarla con el siguiente comando:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```
+docker pull criters/calculate-server
+```
 
-## Test and Deploy
+## Iniciar pgAdmin
 
-Use the built-in continuous integration in GitLab.
+Para iniciar pgAdmin, una vez iniciados los contenedores, dirigirse a la siguiente URL desde el navegador web: [pgAdmin4](http://localhost:5050)
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Se desplagará la pantalla de loguin del servicio de pgAdmin, donde deberá colocar las siguientes credenciales:
 
-***
+        Usuario:    tenpo@tenpo.cl
+        Contraseña: root
 
-# Editing this README
+Una vez dentro, podrá generar una nueva conexión a la Base de Datos previamente generada.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### Configurar una conexión con posgres local
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Para configurar una nueva conexión local, completar los siguientes datos: 
 
-## Name
-Choose a self-explaining name for your project.
+Dashboard -> Add New Server -> Add New Server
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+- Solapa General:
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+        Name: localhost
+        
+- Solapa Connection: 
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+        Hostname/address: local_pgdb
+        port:             5432
+        username:         tenpo
+        password:         root
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+## Test y visualización
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### Para ejecutar los casos de prueba 
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+- Abrir el proyecto y configurarlo para correr con jdk 17. 
+- Desde IntelliJ hacer los siguientes pasos:
+  - File -> Settings... -> Gradle -> en el apartado Gradle JVM, seleccionar la versión del jdk 17.
+  - File -> Project Structure ->
+    - Solapa Project: Seleccionar SDK 17, Proyect lenguage level: 17.
+    - Solapa Modules: Verificar que se encuentre seleccionada la versión Lenguage level 17.
+    - Solapa Platfolm Settings - SDKs -> Seleccionar 17.
+- Compilar Gradle, nuevamente: 
+  - click derecho en la raíz del proyecto -> Rebuild ..
+- Ejecutar con click derecho, run a la clase principal de nombre: CalculateApplication.class 
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+En esta instancia ya será posible ejecutar los casos de prueba.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+#### Nota
+Se han definido un conjunto de Test Case, considerando los casos más relevantes.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+## Consideraciones
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+El proyecto tiene las siguientes herramientas disponibles:
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+- Jwt y Spring Security para la seguridad.
+- Swagger (se puede ingresar con la siguiente url: [Swagger](http://localhost:8080/tenpo/swagger-ui/)
+- Envers (se puede verificar la traza de cada una de las entidades creadas/editadas). No se han expuesto endpoint para hacer pruebas de envers,
+por no estar en el alcance de este proyecto. Sin embargo, es posible visualizar los cambios por medio de consultas a la Base de Datos.
 
-## License
-For open source projects, say how it is licensed.
+internamente, además, se encuentra integrado con: 
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- Lombok. 
+- Mapstruct. 
+- Checkstyle. 
+- Zalando.
+
+Si bien el proyecto cuenta con [Swagger](http://localhost:8080/tenpo/swagger-ui/) para poder realizar las pruebas, en la raíz del mismo, se encuentra un archivo de Postman que podría ser importado.
+El mismo contiene todos los endpoint con la configuración inicial de parámetros de entrada a cada uno de los enpoint publicados.
+
+## Postman y funcionalidad
+
+Una vez importado, se visualizará el siguiente listado de endpoint. Los mismos se encuentran organizados según 
+funcionalidad que se desea probar:
+
+Users
+
+  - (POST) 1 - Create standard user 
+    - Crea un usuario Standard. Inicialmente la Base de Datos no cuenta con usuarios creados. 
+    - No posee todos los permisos.
+    - Debe ejecutarse primero, para poder hacer login posteriormente.
+
+  - (PUT) 3 - Edit user 
+    - Access Token es requerido.
+    - Permite editar un usuario previamente creado.
+    - Podrán editars los siguientes campos:
+      - Contraseña.
+      - Habilitado/deshabilitado.
+      - ROL: Los Roles disponibles son: 
+      ```
+      ROLE_USER
+      ROLE_ADMIN
+      ```
+      - Un usuario standard se crea con rol ROLE_USER. Cabe destacar que este rol no posee todos permisos.
+      - Un usuario con rol ROLE_ADMIN poseerá todos los permisos del sistema.
+      - Los roles son creados al inicio de la aplicación y no pueden agregarse ni modificarse.
+
+  - (DEL) Delete User
+    - Access Token es requerido.
+    - Solo puede hacerlo un usuario con rol: ROLE_ADMIN
+    - Elimina un usuario existente.
+
+History
+
+    - (GET) All Call History
+      - Access Token es requerido.
+      - Obtiene el historial, paginado, de todas las llamadas realizadas en el sistema.
+      - Solo puede hacerlo un usuario con rol: ROLE_ADMIN
+
+    - (GET) Call History by Method
+      - Access Token es requerido.
+      - Obtiene el historial, paginado, de todas las llamadas realizadas en el sistema, según Método.
+      - Los métodos pueden ser: GET, POST, PUT, DELETE.
+      - Solo puede hacerlo un usuario con rol: ROLE_ADMIN
+
+    - (GET) Call History by Username
+      - Access Token es requerido.
+      - Obtiene el historial, paginado, de todas las llamadas realizadas en el sistema, según username.
+      - Solo puede hacerlo un usuario con rol: ROLE_ADMIN
+
+Calculate
+
+    - (GET) Calculate
+      - Access Token es requerido.
+      - Contiene la lógica de petición del cálculo de dos números.
+      - Se incluye un mock que permite generar, de manera aleatoria, errore de conexión al servidor de porcentajes.
+      - Se incluye una clase NO mock, que permitiría apuntar a un servidor de porcentajes real. Actualmente se encuentra deshabilitado.
+        Es posible habilitarlo, cambiando la etiqueta @Qualifier del servicio CalculateService.class.
+      - Existe un cron que ejecuta cada 30 minutos y verifica si hay cambios de porcentajes, del servidor de porcentajes, 
+        tomando en consideración lo pedido en el enunciado.
+    
+Login
+
+    - Permite hacer el login de un usuario previamente creado. Del login se podrá obtener el Acces Token para poder 
+      enviar a travez del Header de cada endpoint.
+  
+## Considerar al momento del desarrollo
+
+Como el proyecto está desplegado en un contenedor Docker, junto a la Base de Datos, al momento de hacer modificaciones, se deberán realizar los siguientes pasos, 
+para poder actualizar la imagen de docker:
+
+- [ ] Generar nuevamente el JAR del proyecto.
+- [ ] Generar nueva imagen del JAR. Para ello, en la raíz del proyecto ya se encuentra configurado un archivo Dockerfile. Por lo que únicamente será necesario ejecutar el siguiente comando, para generar dicha imagen:
+        
+        docker build -t criters/calculate-server .
+
+- [ ] La imagen ya se ha subido a DockerHub. En caso de modificarla, será necesario actualizarla. 
+Para ello, se debe conectar con el usuario "criters" y subir la imagen con una nueva versión.
+Los pasos son:
+
+  - Loguearse:
+
+```
+    docker login
+```
+
+  - Ingresar usuario y contraseña y luego hacer push a DockerHub:
+
+```
+    docker push criters/calculate-server:VX
+```
+
+, donde VX corresponde al tag de la nueva versión.
+
+  - Ejecutar nuevamente el archivo docker-compose.yml que se encuentra en la raíz del proyecto:
+
+```
+docker-compose.yml up -d
+```
+
+## Enunciado
+
+```
+Debes desarrollar una API REST en Spring Boot utilizando java 11 o superior, con las siguientes funcionalidades:
+a. Sign up usuarios.
+b. Login usuarios.
+c. Debe contener un servicio llamado por api-rest que reciba 2 números, los sume, y le aplique una suba de un porcentaje que debe ser adquirido de un servicio externo (por ejemplo, si el servicio recibe 5 y 5 como valores, y el porcentaje devuelto por el servicio externo es 10, entonces (5 + 5) + 10% = 11). Se deben tener en cuenta las siguientes consideraciones:
+El servicio externo puede ser un mock, tiene que devolver el % sumado.
+Dado que ese % varía poco, debe ser consumido cada media hora.
+Si el servicio externo falla, se debe devolver el último valor retornado. Si no hay valor, debe retornar un error la api.
+Si el servicio externo falla, se puede reintentar hasta 3 veces.
+d. Historial de todos los llamados a todos los endpoint junto con la respuesta en caso de haber sido exitoso. Responder en Json, con data paginada. El guardado del historial de llamadas no debe sumar tiempo al servicio invocado.
+e. El historial y la información de los usuarios se debe almacenar en una database PostgreSQL.
+f. Incluir errores http. Mensajes y descripciones para la serie 4XX.
+
+
+2. Se deben incluir tests unitarios.
+3. Esta API debe ser desplegada en un docker container. Este docker puede estar en un dockerhub público. La base de datos también debe correr en un contenedor docker. Recomendación usar docker compose
+4. Debes agregar un Postman Collection o Swagger para que probemos tu API
+5. Tu código debe estar disponible en un repositorio público, junto con las instrucciones de cómo desplegar el servicio y cómo utilizarlo
+```
