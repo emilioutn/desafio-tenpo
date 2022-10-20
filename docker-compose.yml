@@ -7,11 +7,13 @@ services:
         ports:
             - 5432:5432
         environment:
-            POSTGRES_USER: root
+            POSTGRES_USER: tenpo
             POSTGRES_PASSWORD: root
             POSTGRES_DB: tenpo
         volumes:
             - ./local_pgdb/:/var/lib/postgresql/data/
+        networks:
+            - tenpo-network
     pgadmin:
         image: dpage/pgadmin4
         container_name: pgadmin4_container
@@ -19,7 +21,25 @@ services:
         ports:
             - "5050:80"
         environment:
-            PGADMIN_DEFAULT_EMAIL: emilioutn@gmail.com
+            PGADMIN_DEFAULT_EMAIL: tenpo@tenpo.cl
             PGADMIN_DEFAULT_PASSWORD: root
         volumes:
             - ./pgadmin-data/:/var/lib/pgadmin
+        networks:
+            - tenpo-network
+    calculate-service:
+        image: calculate-server
+        container_name: calculate-server
+        restart: always
+        ports:
+            - "8080:8080"
+        links:
+            - local_pgdb
+        environment:
+            TENPO_JDBC_URL: jdbc:postgresql://local_pgdb:5432/tenpo
+            TENPO_JDBC_USER: tenpo
+            TENPO_JDBC_PASS: root
+        networks:
+            - tenpo-network
+networks:
+    tenpo-network:

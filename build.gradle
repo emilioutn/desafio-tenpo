@@ -44,10 +44,8 @@ dependencies {
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation 'org.mockito:mockito-junit-jupiter:4.8.0'
 
-
 	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-	implementation 'com.h2database:h2:2.1.214'
 	implementation 'org.springframework.data:spring-data-envers:2.7.3'
 	implementation 'com.vladmihalcea:hibernate-types-52:2.19.2'
 }
