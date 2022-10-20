@@ -28,7 +28,7 @@ services:
         networks:
             - tenpo-network
     calculate-service:
-        image: calculate-server
+        image: criters/calculate-server
         container_name: calculate-server
         restart: always
         ports:
