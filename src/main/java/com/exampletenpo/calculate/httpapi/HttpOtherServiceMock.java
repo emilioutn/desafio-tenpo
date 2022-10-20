@@ -15,7 +15,7 @@ public class HttpOtherServiceMock implements HttpOtherService {
     @Override
     public BigDecimal calculateFromApi(String jsonWithNumbers) throws InterruptedException, JsonProcessingException,
             ServerNotActiveException {
-        if (generateNumberRandom() < 500) {
+        if (generateNumberRandom() < 800) {
             Thread.sleep(1000);
             NumbersToCalculateDto numbersToCalculateDto = convertJsonToNumbersDto(jsonWithNumbers);
             return numbersToCalculateDto.getFirstNumber().add(numbersToCalculateDto.getSecondNumber());

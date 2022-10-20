@@ -189,7 +189,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "http://localhost:8080/tenpo/call-history/method/GET?page=0&size=100&sort=date",
+							"raw": "http://localhost:8080/tenpo/call-history/method/GET?page=0&size=10&sort=date",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -208,7 +208,7 @@
 								},
 								{
 									"key": "size",
-									"value": "100"
+									"value": "10"
 								},
 								{
 									"key": "sort",
@@ -242,7 +242,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "http://localhost:8080/tenpo/call-history/username/emilio?page=0&size=10&sort=date",
+							"raw": "http://localhost:8080/tenpo/call-history/username/admin?page=0&size=10&sort=date",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -252,7 +252,7 @@
 								"tenpo",
 								"call-history",
 								"username",
-								"emilio"
+								"admin"
 							],
 							"query": [
 								{
